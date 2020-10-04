@@ -1,0 +1,194 @@
+<html>
+    <head>
+        <!-- Compiled and minified CSS -->
+        <!--<link rel="stylesheet" href="css/materialize.min.css"> -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <script src="js/jquery-3.2.1.slim.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <script src="./js/popper.min.js"></script>
+        <script src="./js/jquery-3.5.1.min.js"></script>
+        <script src="./js/angular.min.js"></script>
+        <script>
+            //<!--creating a angularjs app-->
+            var app = angular.module('vshows', []);
+
+             app.controller('searchCtrl', function($scope, $http){
+                $scope.onSearch = function(){
+                    console.log($scope.search);
+                }
+            });
+
+            //creating a controller for importing json data and adding/copulating json data to the controller via looping
+            app.controller('shows1Ctrl', function($scope, $http){
+                //getting data locally through http get request
+                $http.get('./data/shows1.json').then(function(data) {
+                    //extracting and assigning json data received from get request to scope variable 
+                    $scope.shows1 = data.data;
+                    //extracting movie card data as per their slides in seperate 
+                    $scope.slide1 = $scope.shows1.Slide1;
+                    $scope.slide2 = $scope.shows1.Slide2;
+                    $scope.slide3 = $scope.shows1.Slide3;
+                });
+
+                $scope.addToWishlist = function(obj){
+                    var queryString = "?" + obj.title + "&" + obj.imageSrc;
+                    window.location.href = "watchlist.html" + queryString;
+                   console.log(obj);
+               }
+            });
+            app.controller('shows2Ctrl', function($scope, $http){
+                //getting data locally through http get request
+                $http.get('./data/shows2.json').then(function(data) {
+                    //extracting and assigning json data received from get request to scope variable 
+                    $scope.shows2 = data.data;
+                    //extracting movie card data as per their slides in seperate 
+                    $scope.slide1 = $scope.shows2.Slide1;
+                    $scope.slide2 = $scope.shows2.Slide2;
+                    $scope.slide3 = $scope.shows2.Slide3;
+                });
+                $scope.addToWishlist = function(obj){
+                    var queryString = "?" + obj.title + "&" + obj.imageSrc;
+                    window.location.href = "watchlist.html" + queryString;
+                   console.log(obj);
+               }
+            });
+
+        </script> 
+    </head>
+    <body ng-app="vshows">
+        <!--importing header using javascript-->
+        <div ng-include="'header.html'"></div><hr>
+        <div class="container-fluid" ng-controller="searchCtrl" style="margin-left: 35vw; ">
+            <form class="form-inline my-2 my-lg-0">
+                <span style="padding: 4px;"><i class="fa fa-search fa-2x" aria-hidden="true"></i></span>
+                <input 
+                    class="form-control mr-sm-2" 
+                    type="text" placeholder="Search shows" 
+                    aria-label="Search" 
+                    ng-model="search"
+                    style="width: 26vw;">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button" ng-click="onSearch()">Search</button>
+            </form>
+        </div>
+        <div class="container-fluid" ng-controller="shows1Ctrl">
+            <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel" style="margin-top: 1vw;">
+
+                <h4>Top Rated</h4>
+                <!--Indicators-->
+                <ol class="carousel-indicators">
+                    <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+                    <li data-target="#multi-item-example" data-slide-to="1"></li>
+                    <li data-target="#multi-item-example" data-slide-to="2"></li>
+                </ol>
+                <!--/.Indicators-->
+                <!--Slides-->
+                <div class="carousel-inner" role="listbox">
+                    <!--First slide-->
+                    <div class="carousel-item active">
+                        <div class="row">
+                            <div class="col-md-3" ng-repeat="show in slide1">
+                                <div ng-include="'showcard.html'"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Second slide-->
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-md-3" ng-repeat="show in slide2">
+                                <div ng-include="'showcard.html'"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Second slide-->
+                    <!--Third slide-->
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-md-3" ng-repeat="show in slide3">
+                                <div ng-include="'showcard.html'"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Third slide-->
+
+                    <a class="carousel-control-prev" href="#multi-item-example" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#multi-item-example" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+
+                </div>
+                <!--/.Slides-->
+
+            </div>
+        </div>
+
+        <div class="container-fluid" ng-controller="shows2Ctrl">
+            <div id="multi-item-example2" class="carousel slide carousel-multi-item" data-ride="carousel" style="margin-top: 3vw;">
+
+                <h4>Action</h4>
+                <!--Indicators-->
+                <ol class="carousel-indicators">
+                    <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+                    <li data-target="#multi-item-example" data-slide-to="1"></li>
+                    <li data-target="#multi-item-example" data-slide-to="2"></li>
+                </ol>
+                <!--/.Indicators-->
+
+                <!--Slides-->
+                <div class="carousel-inner" role="listbox">
+                    <!--First slide-->
+                    <div class="carousel-item active">
+                        <div class="row">
+                            <div class="col-md-3" ng-repeat="show in slide1">
+                                <div ng-include="'showcard.html'"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.First slide-->
+                    <!--Second slide-->
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-md-3" ng-repeat="show in slide2">
+                                <div ng-include="'showcard.html'"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Second slide-->
+                    <!--Third slide-->
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-md-3" ng-repeat="show in slide3">
+                                <div ng-include="'showcard.html'"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Third slide-->
+
+                    <a class="carousel-control-prev" href="#multi-item-example2" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#multi-item-example2" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+
+                </div>
+                <!--/.Slides-->
+
+            </div>
+        </div>
+         <!--Carousel Wrapper-->
+        
+        <!--/.Carousel Wrapper-->
+        <hr>
+        <!-- Importing Footer using js -->
+        <div ng-include="'footer.html'"></div>
+        <!-- Footer -->
+    </body>
+</html>
